@@ -7,11 +7,11 @@ pipeline {
             }
         }
 
-        stage('Docker Compose Up') {
+        stage('Docker Up Discovery Service') {
 			steps {
 				sh '''
-                    cd back
-                    docker-compose -f docker-compose.yml up -d --build
+                    cd back/discovery-Client
+                    docker run -d -p 8761:8761 --name discovery-service discovery-service:1.2
                 '''
             }
         }
@@ -20,8 +20,8 @@ pipeline {
     post {
 		always {
 			sh '''
-                cd back
-                docker-compose down
+                docker stop discovery-service || true
+                docker rm discovery-service || true
             '''
             echo "Pipeline terminée"
         }
