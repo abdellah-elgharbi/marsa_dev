@@ -1,18 +1,29 @@
 pipeline {
 	agent any
-	stages{
+    stages {
 		stage("Build") {
-			steps{
-				sh "is already build it"
-			}
+			steps {
+				sh "echo 'is already built it'"
+            }
+        }
 
-		}
-		stage('Docker Compose Up'){
-			steps{
-				sh "docker-compose -f docker-compose.yml up -d --build"
-			}
+        stage('Docker Compose Up') {
+			steps {
+				sh '''
+                    cd back
+                    docker-compose -f docker-compose.yml up -d --build
+                '''
+            }
+        }
+    }
 
-		}
-	}
-
+    post {
+		always {
+			sh '''
+                cd back
+                docker-compose down
+            '''
+            echo "Pipeline terminée"
+        }
+    }
 }
