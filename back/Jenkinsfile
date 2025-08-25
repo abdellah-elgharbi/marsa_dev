@@ -1,17 +1,20 @@
 pipeline {
 	agent any
+    tools {
+		maven 'Maven3'  // Nom défini dans Global Tool Configuration
+    }
     stages {
 		stage("Build") {
 			steps {
-				sh "echo 'is already built it'"
+				bat "mvn clean package -DskipTests" // Utiliser bat sur Windows
             }
         }
 
         stage('Docker Up Discovery Service') {
 			steps {
-				sh '''
-                    cd back/discovery-Client
-                    mvn clean package -DskipTests
+				bat '''
+                    cd back\\discovery-Client
+
                     docker build -t discovery-service:1.2 .
                     docker run -d -p 8761:8761 --name discovery-service discovery-service:1.2
                 '''
@@ -20,9 +23,9 @@ pipeline {
     }
     post {
 		always {
-			sh '''
-                docker stop discovery-service || true
-                docker rm discovery-service || true
+			bat '''
+                docker stop discovery-service || exit 0
+                docker rm discovery-service || exit 0
             '''
             echo "Pipeline terminée"
         }
