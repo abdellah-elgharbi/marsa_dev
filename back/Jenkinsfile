@@ -11,12 +11,12 @@ pipeline {
 			steps {
 				sh '''
                     cd back/discovery-Client
+                    docker build -t discovery-service:1.2 .
                     docker run -d -p 8761:8761 --name discovery-service discovery-service:1.2
                 '''
             }
         }
     }
-
     post {
 		always {
 			sh '''
