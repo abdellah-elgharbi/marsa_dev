@@ -7,15 +7,7 @@ pipeline {
 		REMOTE_HOST="kali@192.168.25.139"
 	}
     stages {
-		stage("docker start"){
-			steps {
-				sh '''
-				sudo systemctl start docker
-				docker info
-				'''
-			}
 
-		}
 		stage("Build") {
 			steps {
 				sh '''
