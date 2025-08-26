@@ -25,10 +25,15 @@ pipeline {
                 '''
             }
         }
+        stage("etablire connection"){
+			sh '''
+
+			'''
+		}
         stage("push to distance server"){
 			steps{
 				sh '''
-			docker save discovery-service:1.2 | ssh $REMOTE_HOST "docker load"
+			    docker save discovery-service:1.2 | ssh $REMOTE_HOST "docker load"
 
 			'''
 			}
