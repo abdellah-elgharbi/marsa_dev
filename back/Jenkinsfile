@@ -25,18 +25,24 @@ pipeline {
             }
         }
         stage("push to distance server"){
-			sh '''
+			steps{
+				sh '''
 			docker save discovery-service:1.2 | ssh $REMOTE_HOST "docker load"
 
 			'''
+			}
+
 		}
 		  stage("deploy"){
-			sh '''
+			steps{
+				sh '''
 			    ssh $REMOTE_HOST
 			    docker stop discovery-service || true
 			    docker rm discovery-service || true
 			    docker run -d --name discovery-service -p 8761:8761 discovery-service:1.2
 			'''
+
+		}
 		}
     }
 
