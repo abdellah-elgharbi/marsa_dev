@@ -25,11 +25,7 @@ pipeline {
                 '''
             }
         }
-        stage("etablire connection"){
-			sh '''
 
-			'''
-		}
         stage("push to distance server"){
 			steps{
 				sh '''
